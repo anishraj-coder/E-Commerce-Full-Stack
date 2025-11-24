@@ -73,7 +73,7 @@ public class OrderService {
         }
         savedOrder.setOrderItems(orderItems);
         savedOrder.setTotalPrice(totalPrice);
-        savedOrder.setStatus(OrderStatus.PLACED);
+        savedOrder.setStatus(OrderStatus.PENDING);
         cartService.clearCart(cart.getId());
         log.warn("order successfully placed orderId: {}",savedOrder.getId());
         return orderRepository.save(savedOrder);
@@ -96,7 +96,7 @@ public class OrderService {
     public Order cancelOrder(AppUser user,Long orderId){
         Order order=getOrderByIdAndUser(user,orderId);
         if(!order.getUser().getId().equals(user.getId())){
-            log.error("Cannot c");
+            log.error("Cannot cancel the order of another account");
             throw new SecurityException("Cannot cancel order of this account");
         }
         order.setStatus(OrderStatus.CANCELLED);

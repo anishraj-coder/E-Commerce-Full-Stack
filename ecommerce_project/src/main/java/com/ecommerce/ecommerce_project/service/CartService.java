@@ -24,7 +24,7 @@ public class CartService {
     private final ProductService productService;
 
     public Cart getOrCreateCart(AppUser user){
-        return cartRepository.findByUser(user)
+        return cartRepository.findByUserId(user.getId())
                 .orElseGet(()->{
                     Cart cart= Cart.builder()
                             .cartItems(new HashSet<>())

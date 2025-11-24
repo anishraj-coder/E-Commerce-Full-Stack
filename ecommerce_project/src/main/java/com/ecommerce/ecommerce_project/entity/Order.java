@@ -3,6 +3,8 @@ package com.ecommerce.ecommerce_project.entity;
 
 import com.ecommerce.ecommerce_project.entity.types.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,6 +20,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 @ToString
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Order {
 
     @Id
@@ -28,11 +31,13 @@ public class Order {
     @JoinColumn(name = "user_orders",nullable = false)
     @ToString.Exclude
     @JsonIgnore
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private AppUser user;
 
     @Builder.Default
     @OneToMany(mappedBy = "order",cascade = CascadeType.ALL)
     @ToString.Exclude
+    @JsonManagedReference("order_order_items")
     private Set<OrderItem> orderItems=new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -48,5 +53,11 @@ public class Order {
 
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
+
+    private String razorpayOrderId;
+
+    private String razorpayPaymentId;
+
+    private String razorpaySignature;
 
 }

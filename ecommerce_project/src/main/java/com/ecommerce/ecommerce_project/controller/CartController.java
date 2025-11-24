@@ -61,7 +61,8 @@ public class CartController {
     }
 
     @DeleteMapping("/clear")
-    public ResponseEntity<Void> clearCart(@AuthenticationPrincipal AppUser user){
+    public ResponseEntity<Void> clearCart(@AuthenticationPrincipal String userEmail){
+        AppUser user=appUserService.getAppUserFromEmail(userEmail);
         Cart cart=cartService.getOrCreateCart(user);
         cartService.clearCart(cart.getId());
         return ResponseEntity.status(HttpStatus.ACCEPTED)

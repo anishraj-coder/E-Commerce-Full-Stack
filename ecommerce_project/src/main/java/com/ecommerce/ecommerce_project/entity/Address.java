@@ -2,6 +2,7 @@ package com.ecommerce.ecommerce_project.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,6 +14,7 @@ import lombok.*;
 @Setter
 @ToString
 @Builder
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Address {
 
     @Id

@@ -4,6 +4,7 @@ package com.ecommerce.ecommerce_project.entity;
 import com.ecommerce.ecommerce_project.entity.types.Provider;
 import com.ecommerce.ecommerce_project.entity.types.RoleTypes;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -23,6 +24,7 @@ import java.util.Set;
 @NoArgsConstructor
 @ToString
 @Builder
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class AppUser {
 
     @Id
