@@ -1,30 +1,55 @@
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
+import type { OrderStatus } from "@/types/order.ts";
 
+interface OrderStatusLabel {
+    label: string;
+    value: OrderStatus;
+}
 
-const orderStatus=[
-    { id: "id1",label:"Shipping",value:"shipping"},
-    {id:'id2',label:"On the way",value: "on_the_way"},
-    {id:'id3',label:'Delivered',value: "delivered"},
-    {id:'id4',label:"Cancelled",value: "cancelled"},
-    {id:'id5',label: 'Return',value:"return"}
-]
-const OrderHistoryFilter=()=>{
-    return(
-        <div className={`lg:sticky top-10 w-full h-fit py-6 px-8 rounded-2xl shadow-2xl shadow-gray-600/40 space-y-4`}>
-            <h2 className={`font-bold text-2xl`}>Filter</h2>
-            <hr/>
-            <h2 className={`text-lg font-semibold text-gray-700`}>Order Status</h2>
-            <hr/>
-            {orderStatus.map(item=>(
-                <div key={item.id} className={`grid grid-cols-[10%_90%] gap-5`}>
-                    <input
-                        name={item.value}
-                        type="checkbox"
-                        className="h-5 w-5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 cursor-pointer"
-                    />
-                    <label htmlFor={item.value} className={`font-light text-gray-700 `} >{item.label}</label>
+const orderStatus: OrderStatusLabel[] = [
+    { label: "Pending", value: "PENDING" },
+    { label: "Placed", value: "PLACED" },
+    { label: "Shipped", value: "SHIPPED" },
+    { label: "Delivered", value: "DELIVERED" },
+    { label: "Cancelled", value: "CANCELLED" },
+];
+
+interface FilterProps {
+    selectedStatus: OrderStatus[];
+    handleFilterChange: (value: OrderStatus, checked: boolean) => void;
+}
+
+const OrderHistoryFilter = ({ selectedStatus, handleFilterChange }: FilterProps) => {
+    return (
+        <div className="hidden lg:block sticky top-24 h-fit p-6 border rounded-xl shadow-sm bg-white">
+            <h2 className="font-bold text-xl mb-4">Filters</h2>
+            <div className="space-y-6">
+                <div>
+                    <h3 className="font-semibold text-sm text-gray-900 mb-3">Order Status</h3>
+                    <div className="space-y-3">
+                        {orderStatus.map((option) => (
+                            <div key={option.value} className="flex items-center space-x-2">
+                                <Checkbox
+                                    id={option.value}
+                                    checked={selectedStatus.includes(option.value)}
+                                    onCheckedChange={(checked) =>
+                                        handleFilterChange(option.value, checked === true)
+                                    }
+                                />
+                                <Label
+                                    htmlFor={option.value}
+                                    className="text-sm font-medium leading-none cursor-pointer"
+                                >
+                                    {option.label}
+                                </Label>
+                            </div>
+                        ))}
+                    </div>
                 </div>
-            ))}
+            </div>
         </div>
     );
 };
+
 export default OrderHistoryFilter;

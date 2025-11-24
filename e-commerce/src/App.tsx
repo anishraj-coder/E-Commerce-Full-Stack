@@ -7,6 +7,8 @@ import {useUserStore} from "@/store/useUserStore.ts";
 import {useShallow} from "zustand/react/shallow";
 import {useEffect} from "react";
 import {useAuthStore} from "@/store/authStore.ts";
+import {useCheckOutStore} from "@/store/useCheckOutStore.ts";
+import {useGetAllAddress} from "@/hooks/useAddress.ts";
 
 
 
@@ -16,18 +18,31 @@ const App = () => {
         setUser: state.setUser,
         removeUser: state.removeUser
     })));
+    const {removeAddress,address}=useCheckOutStore(useShallow(state=>({removeAddress:state.clearSelectedAddress,address:state.selectedAddress})))
     const {logout}=useAuthStore(useShallow(state => ({logout:state.logout})));;
     useEffect(()=>{
         if(latestUser)setUser(latestUser);
     },[setUser,latestUser])
 
+    const {data:addresses}=useGetAllAddress();
     useEffect(() => {
         if(error){
             console.log("Force log out user");
             logout();
             removeUser();
+            removeAddress();
+
         }
-    }, [error,logout,removeUser]);
+        if(!addresses||addresses.length===0){
+            removeAddress();
+            return ;
+        }
+        if(address){
+            const existing=addresses.find(item=>item.id===address.id)
+            if(!existing)removeAddress();
+        }
+    }, [error,logout,address,addresses,removeUser,removeAddress]);
+
 
     return (
         <div className={`h-screen w-full`}>

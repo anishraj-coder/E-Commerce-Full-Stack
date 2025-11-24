@@ -1,5 +1,5 @@
 import {create} from "zustand";
-import {persist,devtools} from "zustand/middleware";
+import {devtools,persist} from "zustand/middleware";
 import type {Address} from "@/types/address.ts";
 
 interface CheckOutState{
@@ -9,15 +9,14 @@ interface CheckOutState{
 }
 
 export const useCheckOutStore=create<CheckOutState>()(
-    devtools(
-        persist(
+    persist(
+        devtools(
             (set) => ({
                 selectedAddress:null,
                 setSelectedAddress:(address:Address|null)=>set(()=>({selectedAddress:address})),
                 clearSelectedAddress:()=>set(()=>({selectedAddress:null}))
             }),
             {name:'checkout-state'}
-        ),
-        {name:'checkout-state'}
+        ),{name: 'checkout-state'}
     )
-);;
+);

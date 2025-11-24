@@ -14,7 +14,7 @@ import {
 import {useUserStore} from "@/store/useUserStore.ts";
 import {useShallow} from "zustand/react/shallow";
 import {useAuthStore} from "@/store/authStore.ts";
-import {useNavigate} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
 import {queryClient} from "@/lib/queryClient.ts";
 
 const UserMenu=()=>{
@@ -34,7 +34,7 @@ const UserMenu=()=>{
     return(
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant={'ghost'} className={`relative h-8 w-8 rounded-full`}>
+                <Button variant={'ghost'} className={`relative h-8 w-8 rounded-full cursor-pointer select-none`}>
                     <Avatar>
                         <AvatarImage className={`w-full h-full`} src={`https://github.com/shadcn.png`} alt={`User Icon`}/>
                         <AvatarFallback>{userInitials}</AvatarFallback>
@@ -54,7 +54,7 @@ const UserMenu=()=>{
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator/>
                 <DropdownMenuItem>
-                    Order History
+                    <NavLink to={`/account/orders`}>Orders</NavLink>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator/>
                 <DropdownMenuItem>

@@ -1,6 +1,7 @@
 import type {Address} from "@/types/address.ts";
-import {MapPin,CheckCircle} from "lucide-react";
+import {MapPin, CheckCircle, Trash2} from "lucide-react";
 import {Button}from '@/components/ui/button';
+import {useDeleteAddress} from "@/hooks/useAddress.ts";
 
 interface AddressCardProps{
     address:Address;
@@ -13,8 +14,9 @@ const AddressCard=({address,isSelected,onSelect}:AddressCardProps)=>{
     const ringStyle = isSelected
         ? "ring-2 ring-primary border-primary bg-primary/5 shadow-md"
         : "ring-1 ring-gray-200 hover:ring-primary/50 bg-white";
+    const {mutate:deleteAddress,isPending:isDeleting}=useDeleteAddress();
     return(
-        <div className={`p-4 border rounded-xl shadow-sm space-y-4 text-sm transition-all duration-200 cursor-pointer ${ringStyle}`}
+        <div className={`p-4 border relative rounded-xl shadow-sm space-y-4 text-sm transition-all duration-200 cursor-pointer ${ringStyle}`}
              onClick={() => onSelect(address.id)}
         >
             <div className={`grid grid-cols-[30px_1fr] w-full gap-8`}>
@@ -51,7 +53,11 @@ const AddressCard=({address,isSelected,onSelect}:AddressCardProps)=>{
             >
                 {isSelected ? "Delivery Selected" : "Deliver Here"}
             </Button>
-
+            <Button variant={'ghost'}
+                    onClick={(e)=>{e.stopPropagation();deleteAddress(address.id)}}
+                    disabled={isDeleting}
+                    className={`h-10 w-10 absolute top-2 right-2 text-red-500
+                     hover:bg-zinc-200 rounded-md transition-all duration-200`}><Trash2/></Button>
         </div>
     );
 };

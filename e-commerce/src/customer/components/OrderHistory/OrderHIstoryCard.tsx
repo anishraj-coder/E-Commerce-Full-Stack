@@ -1,40 +1,72 @@
-import {mens_kurta, type ProductInterface} from "@/data/menKurta.ts";
-import AdjustIcon from '@mui/icons-material/Adjust';
+import { Calendar, Package } from "lucide-react";
 import {useNavigate} from "react-router-dom";
+import type {Order, OrderItem} from "@/types/order.ts";
+import {Badge} from  '@/components/ui/badge'
 
-const OrderHistoryCard=({product=mens_kurta[0]}:{product:ProductInterface})=>{
+
+interface OrderHistoryCardProps{
+    order: Order;
+    item:OrderItem
+}
+
+const OrderHistoryCard=({order,item}:OrderHistoryCardProps)=>{
     const navigate=useNavigate();
-    const onClick=()=>{
-        navigate('/account/orders/11');
-        window.scrollTo(0,0);
-    }
-    return(
-        <div onClick={onClick} className={`flex justify-center rounded-3xl ring-2 ring-gray-200 px-10 mr-10 py-3 cursor-pointer`}>
-            <div className={`grid grid-cols-1 lg:grid-cols-3 justify-between px-2 py-4  rounded-lg w-fit`}>
-                <div className={`grid-cols-2 grid w-fit gap-x-2 `}>
-                    <img src={product.imageUrl} alt={product.title}
-                         className={`h-32 w-32 rounded-lg ring-2 ring-gray-400 object-center object-contain`}
-                    />
-                    <div className={`flex flex-col gap-y-1`}>
-                        <h3 className={`h-fit font-medium tracking-tight leading-tight`}>{product.title}</h3>
-                        <h3 className={`text-md font-medium text-gray-500`}>Size: {product.size[0].name}</h3>
+    const formattedDate=new Date(order.orderDate).toLocaleDateString("en-US",{
+        year:'numeric',month:'long',day:'numeric'
+    });
+    const getStatusColor = (status: string) => {
+        switch(status) {
+            case "DELIVERED": return "bg-green-100 text-green-800 hover:bg-green-100";
+            case "CANCELLED": return "bg-red-100 text-red-800 hover:bg-red-100";
+            case "SHIPPED": return "bg-blue-100 text-blue-800 hover:bg-blue-100";
+            default: return "bg-gray-100 text-gray-800 hover:bg-gray-100";
+        }
+    };
+
+    return (
+        <div
+            onClick={() => navigate(`/account/orders/${order.id}`)}
+            className="border rounded-xl p-4 shadow-sm hover:shadow-md transition-all cursor-pointer bg-white flex flex-col sm:flex-row gap-6"
+        >
+            <div className="w-32 h-32 shrink-0 rounded-lg border border-gray-100 overflow-hidden bg-gray-50">
+                <img
+                    src={item.product.imageUrl}
+                    alt={item.product.title}
+                    className="w-full h-full object-cover object-top"
+                />
+            </div>
+
+            <div className="flex-1 flex flex-col justify-between py-1">
+                <div>
+                    <div className="flex justify-between items-start">
+                        <h3 className="font-semibold text-lg text-gray-900 line-clamp-1">
+                            {item.product.title}
+                        </h3>
+                        <p className="text-lg font-bold text-gray-900">
+                            Rs. {item.priceAtPurchase}
+                        </p>
                     </div>
-                </div>
-                <h2 className={`py-3 text-xl font-semibold text-center text-green-500`}>Price: Rs. {product.discountedPrice}</h2>
-                <div className="flex flex-col gap-y-1 leading-tight">
-                    <h4 className="text-lg font-semibold flex gap-1 items-center h-fit">
-                        <AdjustIcon sx={{color:'#7bf1a8'}}/>
-                        Expected Delivery
-                    </h4>
-
-                    <h5>March 3 2025 by 6pm</h5>
-
-                    <h5 className="flex items-center gap-2">
-                        <span className="h-2 w-2 rounded-full bg-green-300 shadow-2xl shadow-green-300"></span>
-                        Item has been Delivered
-                    </h5>
+                    <p className="text-sm text-gray-500 mt-1">{item.product.brand}</p>
+                    <p className="text-xs text-gray-400 mt-1">Size: {item.selectedSize}</p>
                 </div>
 
+                <div className="flex flex-wrap items-center gap-4 mt-4">
+                    <Badge variant="outline" className={`border-0 px-3 py-1 ${getStatusColor(order.status)}`}>
+                        {order.status}
+                    </Badge>
+
+                    <div className="flex items-center gap-1 text-sm text-gray-500">
+                        <Calendar size={14} />
+                        <span>Ordered on {formattedDate}</span>
+                    </div>
+
+                    {order.status === 'DELIVERED' && (
+                        <div className="flex items-center gap-1 text-sm text-green-600 font-medium ml-auto">
+                            <Package size={14} />
+                            <span>Delivered</span>
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
     );

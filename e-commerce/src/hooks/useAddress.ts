@@ -37,3 +37,22 @@ export const useCreateAddress=()=>{
 
     })
 }
+
+export const useDeleteAddress=()=>{
+    const queryClient=useQueryClient();
+    return useMutation({
+        mutationFn: async (addressId:number)=>{
+            const response=await api.delete(`/address/${addressId}`);
+            return response.data;
+        },
+        onSuccess:()=>{
+            queryClient.invalidateQueries({queryKey:['addresses']});
+            toast.success("Address has been deleted!!!!!!");
+        },
+        onError:(error:any)=>{
+            toast.error("Failed to delete address",{
+                description: error?.resposne?.data?.error||"Something went wrong",
+            });
+        }
+    })
+}
