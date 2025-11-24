@@ -45,4 +45,9 @@ public class Address {
     @ToString.Exclude
     @JsonIgnore
     private AppUser user;
+
+    @JsonIgnore
+    @Builder.Default
+    @Column(nullable = false)
+    private Boolean isArchived=false;
 }

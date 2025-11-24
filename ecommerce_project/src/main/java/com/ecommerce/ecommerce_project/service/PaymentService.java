@@ -3,6 +3,7 @@ package com.ecommerce.ecommerce_project.service;
 
 import com.ecommerce.ecommerce_project.dto.request.PaymentCallbackRequest;
 import com.ecommerce.ecommerce_project.dto.response.PaymentInitResponse;
+import com.ecommerce.ecommerce_project.entity.types.OrderStatus;
 import com.ecommerce.ecommerce_project.repository.OrderRepository;
 import com.razorpay.RazorpayClient;
 import com.razorpay.RazorpayException;
@@ -84,6 +85,7 @@ public class PaymentService {
                 order.setRazorpayOrderId(request.getRazorpayOrderId());
                 order.setRazorpayPaymentId(request.getRazorpayPaymentId());
                 order.setRazorpaySignature(request.getRazorpaySignature());
+                order.setStatus(OrderStatus.PLACED);
                 return orderRepository.save(order);
 
             }else{

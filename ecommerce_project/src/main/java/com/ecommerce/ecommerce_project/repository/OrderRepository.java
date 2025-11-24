@@ -20,4 +20,16 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     Optional<Order> findByIdAndUser(Long orderId,AppUser user);
 
     boolean existsByUserAndOrderItems_ProductAndStatusIn(AppUser user, Product product, List<OrderStatus> statuses);
+
+
+    @Query("""
+            SELECT o FROM Order o WHERE o.user=:user
+            AND (:statuses IS NULL OR o.status in :statuses)
+            ORDER BY o.orderDate DESC
+            """)
+    Page<Order> findOrderWithFilters(
+            @Param("user") AppUser user,
+            @Param("statuses")List<OrderStatus> statuses,
+            Pageable pageable
+    );
 }

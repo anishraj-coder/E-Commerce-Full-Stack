@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface AddressRepository extends JpaRepository<Address, Long> {
 
-    List<Address> findAllByUser(AppUser user);
+    List<Address> findAllByUserAndIsArchivedFalse(AppUser user);;
 
     Optional<Address> findByIdAndUser(Long id,AppUser user);
 }

@@ -20,7 +20,7 @@ public class AddressService {
 
     @Transactional(readOnly = true)
     public List<Address> getAddressFromUser(AppUser user){
-        return addressRepository.findAllByUser(user);
+        return addressRepository.findAllByUserAndIsArchivedFalse(user);
     }
 
     @Transactional
@@ -41,17 +41,20 @@ public class AddressService {
     }
 
     @Transactional
-    public void removeAddress(AppUser appUser,Long addressId){
-        Address address=addressRepository.findById(addressId)
-                .orElseThrow(()->{
-                    log.error("Cannot find address with id: {}",addressId);
-                    return new IllegalArgumentException("Cannot find the address with id: "+addressId);
+    public void removeAddress(AppUser appUser, Long addressId){
+        Address address = addressRepository.findById(addressId)
+                .orElseThrow(() -> {
+                    log.error("Cannot find address with id: {}", addressId);
+                    return new IllegalArgumentException("Cannot find the address with id: " + addressId);
                 });
+
         if(!address.getUser().getId().equals(appUser.getId()))
             throw new SecurityException("Cannot change address of this user");
 
+        address.setIsArchived(true);
+        addressRepository.save(address);
+
         appUser.getAddresses().remove(address);
-        addressRepository.delete(address);
     }
 
     @Transactional(readOnly = true)

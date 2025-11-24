@@ -80,8 +80,9 @@ public class OrderService {
     }
 
     @Transactional(readOnly = true)
-    public Page<Order> getOrderPageFromUser(AppUser user, Pageable pageable){
-        return orderRepository.findByUserOrderByOrderDateDesc(user,pageable);
+    public Page<Order> getOrderPageFromUser(AppUser user,List<OrderStatus> statuses, Pageable pageable){
+        List<OrderStatus> filter = (statuses != null && !statuses.isEmpty()) ? statuses : null;
+        return orderRepository.findOrderWithFilters(user, filter, pageable);
     }
     @Transactional(readOnly = true)
     public Order getOrderByIdAndUser(AppUser user,Long id){
