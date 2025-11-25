@@ -43,14 +43,12 @@ const CartDetails = ({ handleOnClick }: { handleOnClick: () => void }) => {
     return (
         <section className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-10 lg:gap-16 items-start">
 
-            {/* Left: Items List */}
             <div className="flex flex-col gap-6">
                 {cart.cartItems.map((item) => (
                     <CartItem key={item.id} item={item} />
                 ))}
             </div>
 
-            {/* Right: Price Summary */}
             <div className="w-full rounded-xl border bg-white shadow-sm p-6 sticky top-24 h-fit">
                 <h2 className="font-bold text-lg mb-4 text-gray-900">Price Details</h2>
 
@@ -78,7 +76,7 @@ const CartDetails = ({ handleOnClick }: { handleOnClick: () => void }) => {
 
                 <Button
                     onClick={handleOnClick}
-                    className="w-full mt-6 h-12 text-base font-medium shadow-lg shadow-primary/20"
+                    className="w-full mt-6 h-12 text-base font-medium shadow-lg shadow-primary/20 cursor-pointer"
                 >
                     Place Order
                 </Button>

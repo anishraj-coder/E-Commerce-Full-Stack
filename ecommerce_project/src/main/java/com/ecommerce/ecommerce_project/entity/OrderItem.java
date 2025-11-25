@@ -37,4 +37,6 @@ public class OrderItem {
 
     private Double priceAtPurchase;
 
+    private Double originalPurchasePrice;
+
 }

@@ -77,7 +77,7 @@ const ProductPage=()=>{
                     isError?<div className={` font-light flex items-center justify-center`}>
                         <h2 className={`text-red-500 text-3xl`}>Error occurred while loading data</h2>
                     </div>:
-                    data?.content&&<div className={`w-full  grid grid-cols-2 mid:grid-cols-2 lg:grid-cols-4 gap-6`}>
+                    data?.content&&<div className={`w-full  grid grid-cols-1 place-items-center mid:grid-cols-2 lg:grid-cols-4 gap-6`}>
                         {data?.content.map((item)=>(
                             <ProductCard key={nanoid()} product={item}/>
                         ))}

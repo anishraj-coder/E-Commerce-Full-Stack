@@ -1,29 +1,58 @@
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { type Product } from "@/types/product"; // Using Real Type
+import { Badge } from "@/components/ui/badge";
 
-export interface ProductCardProp{
-
-    brand:string;
-    description:string;
-    price:number;
-    image:string;
+interface HomeSectionCardProps {
+    product: Product;
 }
 
-const HomeSectionCard=({brand,description,price,image}:ProductCardProp)=>{
-    const navigate=useNavigate();
-    const onClick=()=>{
-        navigate(`/product/1`);
-        window.scrollTo(0,0);
-    }
+const HomeSectionCard = ({ product }: HomeSectionCardProps) => {
+    const navigate = useNavigate();
 
-    return(
-        <div onClick={onClick} className={`w-[15rem] h-[20 rem] pb-4 overflow-hidden cursor-pointer  select-none flex 
-        flex-col items-center gap-2 hover:scale-105 hover:shadow-2xs transition-all duration-200 rounded-lg border-[2px] border-gray-200`}>
-            <img className={`w-[13 rem] h-[14.5rem] object-top object-contain mt-[0.5rem]`}
-                src={image} alt=""/>
-            <h3 className={`font-medium mt-1 text-lg text-gray-900`}>{brand}</h3>
-            <h2 className={`text-sm text-gray-600 font-light `}>{description.slice(0,30)}</h2>
-            <h2 className={`text-sm font-bold text-gray-700 `}>Rs. {price}</h2>
+    return (
+        <div
+            onClick={() => {
+                navigate(`/product/${product.id}`);
+                window.scrollTo(0, 0);
+            }}
+            className="cursor-pointer flex flex-col w-full group gap-3"
+        >
+            {/* Image Container with Zoom Effect */}
+            <div className="aspect-[3/4] w-full overflow-hidden rounded-xl bg-gray-100 relative">
+                <img
+                    className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                    src={product.imageUrl}
+                    alt={product.title}
+                />
+                {/* Optional: New Arrival or Discount Badge */}
+                {product.discountPercent > 0 && (
+                    <Badge className="absolute top-3 left-3 bg-red-500 hover:bg-red-600 shadow-sm">
+                        -{product.discountPercent}%
+                    </Badge>
+                )}
+            </div>
+
+            {/* Minimalist Details */}
+            <div className="flex flex-col gap-1 px-1">
+                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider">
+                    {product.brand}
+                </h3>
+                <h2 className="text-sm font-medium text-gray-900 line-clamp-1" title={product.title}>
+                    {product.title}
+                </h2>
+                <div className="flex items-center gap-2 mt-1">
+                    <span className="text-sm font-semibold text-gray-900">
+                        Rs. {product.discountedPrice}
+                    </span>
+                    {product.price > product.discountedPrice && (
+                        <span className="text-xs text-gray-400 line-through">
+                            Rs. {product.price}
+                        </span>
+                    )}
+                </div>
+            </div>
         </div>
     );
 }
-export  default HomeSectionCard;
+
+export default HomeSectionCard;

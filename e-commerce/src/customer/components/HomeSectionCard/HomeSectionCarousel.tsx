@@ -1,47 +1,94 @@
-import HomeSectionCard from "@/customer/components/HomeSectionCard/HomeSectionCard.tsx";
-import {useRef} from "react";
+import { useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import Autoplay from "embla-carousel-autoplay";
-import {Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious} from "@/components/ui/carousel.tsx";
-import type {ProductInterface} from "@/data/menKurta.ts";
-import {nanoid} from "nanoid";
+import {
+    Carousel,
+    CarouselContent,
+    CarouselItem,
+    CarouselNext,
+    CarouselPrevious
+} from "@/components/ui/carousel";
 
-export interface HomeSectionCarouselProps{
-    title:string;
-    products:ProductInterface[];
-    autoplay:boolean;
-}
+// 1. Data Source (Static Marketing Data)
+// In a real app, this might come from a CMS like Contentful or Strapi,
+// but usually, these are hardcoded or config-based.
+const carouselData = [
+    {
+        image: "https://www.ethnicplus.in/media/mageplaza/bannerslider/banner/image/1/0/10_5.jpg",
+        path: "/products?category=women_clothing",
+        alt: "Women's Fashion"
+    },
+    {
+        image: "https://www.ethnicplus.in/media/mageplaza/bannerslider/banner/image/1/2/12_4.jpg",
+        path: "/products?category=lehenga_choli",
+        alt: "Lehenga Collection"
+    },
+    {
+        image: "https://www.ethnicplus.in/media/mageplaza/bannerslider/banner/image/9/_/9_8.jpg",
+        path: "/products?category=men_kurta",
+        alt: "Men's Collection"
+    },
+    {
+        image: "https://www.ethnicplus.in/media/mageplaza/bannerslider/banner/image/1/1/11_4.jpg",
+        path: "/products?category=saree",
+        alt: "Saree Collection"
+    }
+];
 
-const HomeSectionCarousel=({title,products,autoplay=false}:HomeSectionCarouselProps)=>{
-    const plugin=useRef(Autoplay({
-        delay:5000,
-        stopOnInteraction:true,
-        stopOnMouseEnter:true,
-    }))
-    return(<>
-            <div className={`w-full `}>
-                <h1 className={`font-bold text-5xl pt-4 pl-10 border-t-[2px] border-gray-400/50`}>{title}</h1>
-            </div>
+const HomeCarousel = () => {
+    const navigate = useNavigate();
 
-            <div className={`w-full  px-4 flex justify-center `}>
+    // 2. The Engine: Autoplay Plugin
+    // We use useRef because we want this plugin instance to persist
+    // across re-renders without causing re-renders itself.
+    const plugin = useRef(
+        Autoplay({
+            delay: 4000,
+            stopOnInteraction: true // Stops if user touches it
+        })
+    );
 
-                <Carousel
-                    opts={{align:"start",loop:false}}
-                    plugins={autoplay?[plugin.current]:[]}
-                    className={`w-full  `}
-                >
-                    <CarouselContent className={`-ml-2 py-5 md:-ml-4 flex justify-start items-center `}>
-                        {products.map(product=>(
-                            <CarouselItem key={nanoid()} className={`pl-2 md:pl-4 basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/6`}>
-                                <HomeSectionCard  brand={product.brand} description={product.description} price={product.price} image={product.imageUrl}/>
-                            </CarouselItem>
-                        ))}
-                    </CarouselContent>
-                    <CarouselPrevious className={`left-0 bg-white h-1/2 rounded-md flex justify-center items-center `}/>
-                    <CarouselNext className={`right-0 bg-white h-1/2 rounded-md flex justify-center items-center `}/>
+    return (
+        // 3. Container
+        <div className="w-full">
+            <Carousel
+                // Embla options
+                opts={{
+                    align: "start",
+                    loop: true
+                }}
+                // Attach the plugin
+                plugins={[plugin.current]}
+                className="w-full"
+                // Accessibility
+                onMouseEnter={plugin.current.stop}
+                onMouseLeave={plugin.current.reset}
+            >
+                <CarouselContent>
+                    {/* 4. The Rendering Loop */}
+                    {carouselData.map((item, index) => (
+                        <CarouselItem key={index} onClick={() => navigate(item.path)}>
+                            <div className="cursor-pointer relative h-[40vh] sm:h-[60vh] lg:h-[80vh] w-full overflow-hidden">
+                                <img
+                                    className="w-full h-full object-cover object-center transition-transform duration-700 hover:scale-105"
+                                    src={item.image}
+                                    alt={item.alt}
+                                    // Performance optimization: Priority load the first image
+                                    loading={index === 0 ? "eager" : "lazy"}
+                                />
+                                {/* Optional: Dark Overlay for text readability if you add text later */}
+                                {/* <div className="absolute inset-0 bg-black/10 hover:bg-transparent transition-colors" /> */}
+                            </div>
+                        </CarouselItem>
+                    ))}
+                </CarouselContent>
 
-                </Carousel>
-            </div>
-        </>
-        );
+                {/* Controls: Hidden on mobile to keep it clean */}
+                <CarouselPrevious className="hidden lg:flex left-4 h-12 w-12" />
+                <CarouselNext className="hidden lg:flex right-4 h-12 w-12" />
+            </Carousel>
+        </div>
+    );
 };
-export default HomeSectionCarousel;
+
+export default HomeCarousel;

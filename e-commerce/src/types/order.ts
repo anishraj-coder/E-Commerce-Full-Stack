@@ -9,6 +9,7 @@ export interface OrderItem {
     priceAtPurchase: number;
     userId: number;
     selectedSize:string;
+    originalPurchasePrice:number;
 }
 
 export interface Order {
@@ -21,7 +22,7 @@ export interface Order {
     totalPrice: number;
     totalDiscountedPrice: number;
     discount: number;
-    status: "PENDING" | "PLACED" | "CONFIRMED" | "SHIPPED" | "DELIVERED" | "CANCELLED";
+    status: "PENDING" | "PLACED" | "CONFIRMED" | "SHIPPED" | "DELIVERED" | "CANCELLED"|"OUT_FOR_DELIVERY";
     totalItem: number;
     createdAt: string;
     razorpayOrderId?: string | null;

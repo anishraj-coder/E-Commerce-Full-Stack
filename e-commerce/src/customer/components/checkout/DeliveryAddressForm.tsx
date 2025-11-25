@@ -16,11 +16,12 @@ import {
 } from "@/components/ui/form";
 
 import {zodResolver}from "@hookform/resolvers/zod";
-import {useState} from "react";
+import { useState} from "react";
 import type {Address, CreateAddressRequest} from "@/types/address.ts";
 import {useCreateAddress, useGetAllAddress} from "@/hooks/useAddress.ts";
 import {Spinner} from "@/components/ui/spinner.tsx";
 import {useCheckOutStore} from "@/store/useCheckOutStore.ts";
+import {useShallow} from "zustand/react/shallow";
 
 const formSchema = z.object({
     firstName: z.string()
@@ -59,7 +60,7 @@ const DeliveryAddressForm=()=>{
     const [selectedId, setSelectedId] = useState<number|null>(null);
     const {data:addresses,isLoading: isLoadingAddresses}=useGetAllAddress();
     const {mutate:createAddress,isPending:isCreating}=useCreateAddress();
-    const setSelectedAddress=useCheckOutStore(state => state.setSelectedAddress);
+    const {setSelectedAddress}=useCheckOutStore(useShallow(state => ({setSelectedAddress:state.setSelectedAddress, selectedAddress:state.selectedAddress})));
     const form=useForm<FormType>({
         resolver: zodResolver(formSchema),
         defaultValues:{
@@ -83,16 +84,19 @@ const DeliveryAddressForm=()=>{
             zip:data.zip,
         }
         createAddress(createAddressDto,{
-            onSuccess: ()=>form.reset(),
+            onSuccess: ()=> {
+                form.reset();
+            },
         });
     }
     const handleSelectAddress=(address:Address)=>{
         setSelectedId(address.id);
         setSelectedAddress(address);
     }
+
+
     return (
         <div className="w-full max-w-6xl mx-auto">
-            {/* Optional: Add a nice header */}
             <div className="text-center mb-10">
                 <h1 className="text-3xl font-bold text-gray-900">Delivery Address</h1>
                 <p className="text-gray-600 mt-2">Choose or add a new delivery address</p>
@@ -128,7 +132,6 @@ const DeliveryAddressForm=()=>{
                     )}
                 </div>
 
-                {/* Right: Add New Address Form */}
                 <div className="flex flex-col">
                     <h2 className="text-2xl font-semibold text-gray-900 mb-6">Add New Address</h2>
 
@@ -224,7 +227,7 @@ const DeliveryAddressForm=()=>{
                                             Saving Address...
                                         </>
                                     ) : (
-                                        "Save & Deliver Here"
+                                        "Save new Delivery Address"
                                     )}
                                 </Button>
                             </form>

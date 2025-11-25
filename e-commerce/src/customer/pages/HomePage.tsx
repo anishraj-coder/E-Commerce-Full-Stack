@@ -1,18 +1,39 @@
 import EcommerceCarousel from "@/customer/components/navigation/EcommerceCarousel.tsx";
-import HomeSectionCarousel from "@/customer/components/HomeSectionCard/HomeSectionCarousel.tsx";
-import {mens_kurta} from "@/data/menKurta.ts";
-import {men_jeans} from "@/data/menJeans.ts";
-import {men_shirt} from "@/data/menShirt.ts";
+import ProductSection from "@/customer/components/HomeSectionCard/ProductSection.tsx";
 
-const HomePage=()=>{
+const HomePage = () => {
+    return (
+        <div className="min-h-screen bg-white">
+            {/* Hero Banner */}
+            <EcommerceCarousel />
 
-    return(
-        <div className={`w-full min-h-screen`}>
-            <EcommerceCarousel/>
-            <HomeSectionCarousel title={`Men Kurtas`} products={mens_kurta} autoplay={false}/>
-            <HomeSectionCarousel title={`Men Jeans`} products={men_jeans} autoplay={false}/>
-            <HomeSectionCarousel title={`Men Shirt`} products={men_shirt} autoplay={false}/>
+            {/* Dynamic Sections */}
+            <div className="space-y-4 py-10 container mx-auto max-w-7xl">
+
+                {/* 1. New Arrivals (Sort by ID desc usually means newest) */}
+                <ProductSection
+                    sectionName="New Arrivals"
+                    sort="id,desc"
+                />
+
+                {/* 2. Category Specific */}
+                <ProductSection
+                    sectionName="Men's Kurtas"
+                    filterCategory="men_kurta"
+                />
+
+                <ProductSection
+                    sectionName="Men's Jeans"
+                    filterCategory="men_jeans"
+                />
+
+                <ProductSection
+                    sectionName="Men's Shirts"
+                    filterCategory="men_shirt"
+                />
+            </div>
         </div>
     );
-}
+};
+
 export default HomePage;

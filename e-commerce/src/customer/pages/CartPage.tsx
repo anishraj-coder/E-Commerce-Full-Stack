@@ -5,7 +5,7 @@ import {useNavigate} from "react-router-dom";
 const CartPage=()=>{
     const navigate=useNavigate();
     const handleOnClick=()=>{
-        navigate('/checkout?step=1');
+        navigate('/account/checkout?step=1');
         window.scrollTo(0,0);
     }
     return(

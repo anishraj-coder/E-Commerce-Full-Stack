@@ -39,5 +39,19 @@ export const useGetOrderHistory=(filters:OrderHistoryFilters)=>{
             return response.data;
         },
         enabled:!!token,
-    })
-}
+    });
+};
+
+export const useGetOrderById=(orderId:number)=>{
+    const token=useAuthStore.getState().token;
+    return useQuery({
+        queryKey:['orderHistory',orderId],
+        queryFn:async()=>{
+            const response =await api.get<Order>(`/orders/history/${orderId}`);
+            return response.data;
+        },
+        staleTime: 5*1000*60,
+        gcTime: 5*1000*60,
+        enabled: !!token,
+    });
+};

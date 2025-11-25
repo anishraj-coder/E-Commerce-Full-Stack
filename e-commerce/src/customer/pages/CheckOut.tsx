@@ -82,7 +82,6 @@ export default function CheckOut() {
                     </div>
                 )}
 
-                {/* Step 3: Payment (Placeholder) */}
                 {activeStep === 3 && (
                     <div className="text-center py-20">
                         <h2 className="text-2xl font-bold">Payment Gateway</h2>

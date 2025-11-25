@@ -10,7 +10,7 @@ import QuantityControl from "@/customer/components/cart/QuantityControl.tsx";
 import {useAuthStore} from "@/store/authStore.ts";
 import {useShallow} from "zustand/react/shallow";
 import {toast} from 'sonner';
-import {useSearchParams} from "react-router-dom";
+import {useNavigate, useSearchParams} from "react-router-dom";
 
 interface ProductDetailsProps{
     product:Product;
@@ -22,6 +22,7 @@ const ProductDetailsSection=({product}:ProductDetailsProps)=>{
     const [selectedSize, setSelectedSize] = useState<string|null>(searchParams.get("size")||null);
     const {token}=useAuthStore(useShallow(state => ({token: state.token})));
     const {data:cart} = useGetCart();
+    const navigate=useNavigate();
     const {mutate:addItem,}=useAddItemToCart();
     const existing = useMemo(() => {
         if (!cart?.cartItems || !selectedSize) return null;
@@ -115,7 +116,11 @@ const ProductDetailsSection=({product}:ProductDetailsProps)=>{
                 ):(
                     !existing?(<Button onClick={handleAddToCart}
                             className={`flex-1 h-full cursor-pointer text-base`}>Add to Cart</Button>)
-                        :(<QuantityControl key={existing.id} cartItemId={existing.id} initialQuantity={existing.quantity}/>)
+                        :(<>
+                            <QuantityControl key={existing.id} cartItemId={existing.id} initialQuantity={existing.quantity}/>
+                            <Button onClick={()=>navigate('/account/cart')}
+                                    className={`text-base h-full px-8 mx-10 cursor-pointer`}>Go To Cart</Button>
+                        </>)
                 )}
                 <Share2 className={`h-full`}/>
             </div>

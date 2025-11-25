@@ -6,7 +6,7 @@ import {useDeleteAddress} from "@/hooks/useAddress.ts";
 interface AddressCardProps{
     address:Address;
     isSelected:boolean;
-    onSelect:(addressId:number)=>void;
+    onSelect:()=>void;
 }
 
 const AddressCard=({address,isSelected,onSelect}:AddressCardProps)=>{
@@ -17,7 +17,7 @@ const AddressCard=({address,isSelected,onSelect}:AddressCardProps)=>{
     const {mutate:deleteAddress,isPending:isDeleting}=useDeleteAddress();
     return(
         <div className={`p-4 border relative rounded-xl shadow-sm space-y-4 text-sm transition-all duration-200 cursor-pointer ${ringStyle}`}
-             onClick={() => onSelect(address.id)}
+             onClick={onSelect}
         >
             <div className={`grid grid-cols-[30px_1fr] w-full gap-8`}>
                 <div className={`mt-1 relative space-y-4 flex flex-wrap flex-col`}>
@@ -44,7 +44,7 @@ const AddressCard=({address,isSelected,onSelect}:AddressCardProps)=>{
             <Button
                 onClick={(e) => {
                     e.stopPropagation();
-                    if (!isSelected) onSelect(address.id);
+                    if (!isSelected) onSelect();
                 }}
                 disabled={isSelected}
                 className="w-full h-10 font-semibold"

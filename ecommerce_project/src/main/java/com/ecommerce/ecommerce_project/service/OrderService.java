@@ -66,6 +66,7 @@ public class OrderService {
                     .quantity(cartItem.getQuantity())
                     .selectedSize(cartItem.getSelectedSize())
                     .productTitle(product.getTitle())
+                    .originalPurchasePrice(product.getPrice())
                     .build();
             OrderItem savedOrderItem=orderItemRepository.save(orderItem);
             orderItems.add(savedOrderItem);

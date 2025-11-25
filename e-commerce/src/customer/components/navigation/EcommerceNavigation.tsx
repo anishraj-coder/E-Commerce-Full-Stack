@@ -80,7 +80,7 @@ const EcommerceNavigation=()=>{
                     Sign Up
                 </button>}
                 {isLoggedIn&&<span className={`p-2 hover:bg-gray-100 transition-all duration-300 cursor-pointer  rounded-full `}>
-                    <NavLink to={'/cart'}><LucideShoppingBag/></NavLink>
+                    <NavLink to={'/account/cart'}><LucideShoppingBag/></NavLink>
                 </span>}
             </div>
 
