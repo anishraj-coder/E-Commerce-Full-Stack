@@ -31,7 +31,7 @@ interface SignInFormProps{
 }
 
 const SignInForm=({onSuccessSignIn}:SignInFormProps)=>{
-    const form=useForm<SignInForm>({
+    const form=useForm<signInForm>({
         resolver: zodResolver(formSchema),
         defaultValues:{
             email:"",

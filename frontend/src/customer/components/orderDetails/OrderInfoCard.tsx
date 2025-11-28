@@ -1,7 +1,8 @@
-import {mens_kurta} from "@/data/menKurta.ts";
-import StarIcon from '@mui/icons-material/Star';
 
-const OrderInfoCard=({product=mens_kurta[0]})=>{
+import StarIcon from '@mui/icons-material/Star';
+import type {Product} from "@/types/product.ts";
+
+const OrderInfoCard=({product}:{product:Product})=>{
 
     return(
         <div className={`w-full grid justify-between rounded-xl ring-2 ring-gray-400 place-items-center grid-cols-1 lg:grid-cols-[40%_20%_40%] gap-y-3 cursor-pointer px-10 py-5 hover:-translate-x-[10px] hover:-translate-y-[10px] hover:shadow-xl hover:shadow-gray-400 transition-all duration-200`}>

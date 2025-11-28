@@ -5,7 +5,6 @@ import { toast } from "sonner"
 import {api} from "@/lib/api.ts";
 import {type UserInfo, useUserStore} from "@/store/useUserStore.ts";
 import {queryClient} from "@/lib/queryClient.ts";
-import type {AxiosError} from "axios";
 
 
 export interface SignUpRequest {
@@ -44,7 +43,7 @@ export const useSignUp=()=>{
                 description:`Has been successfully signed  Up with email: ${data.email}`
             });
         },
-        onError: (error:AxiosError) => {
+        onError: (error:any) => {
             console.log(error)
             toast.error("Registration failed",{
                 description: error?.response?.data?.error || "Something went wrong",
