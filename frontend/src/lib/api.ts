@@ -4,7 +4,7 @@ import {useUserStore} from "@/store/useUserStore.ts";
 import {queryClient} from "@/lib/queryClient.ts";
 
 export const api=axios.create({
-    baseURL:'http://localhost:8081/api',
+    baseURL: import.meta.env.VITE_API_BASE_URL as string,
     headers:{
         "Content-Type": "application/json",
     }
@@ -24,7 +24,6 @@ api.interceptors.response.use(
     (error) => {
         const originalRequest = error.config;
 
-        // Only run once per request
         if (originalRequest._retry) return Promise.reject(error);
         originalRequest._retry = true;
 
