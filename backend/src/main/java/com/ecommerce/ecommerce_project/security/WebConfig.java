@@ -31,7 +31,7 @@ public class WebConfig  {
                 .cors(cors->cors.configurationSource(corsConfig.corsConfigurationSource()))
                 .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth->auth
-                        .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/auth/**","/health/**").permitAll()
                         .requestMatchers(HttpMethod.GET,"/products/**").permitAll()
                         .requestMatchers(HttpMethod.GET,"/categories/**").permitAll()
                         .requestMatchers(HttpMethod.DELETE,"/products/**").authenticated()
