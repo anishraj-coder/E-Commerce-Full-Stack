@@ -82,13 +82,7 @@ export default function CheckOut() {
                     </div>
                 )}
 
-                {activeStep === 3 && (
-                    <div className="text-center py-20">
-                        <h2 className="text-2xl font-bold">Payment Gateway</h2>
-                        <p className="text-gray-500">Integration coming soon...</p>
-                        <Button onClick={handlePrevious} className={`mt-4`}>Back</Button>
-                    </div>
-                )}
+
             </div>
         </div>
     );

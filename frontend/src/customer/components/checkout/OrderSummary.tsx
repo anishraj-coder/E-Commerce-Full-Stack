@@ -52,7 +52,7 @@ const OrderSummary=({selectedAddress}:OrderSummaryProps)=>{
     const navigate=useNavigate();
     const openRazorpayPopup=(paymentData:PaymentInitResponse)=>{
         const options = {
-            key: "rzp_test_RjFVt6R4CVispE",
+            key: "rzp_test_RlEa2ZKsbDtJOE",
             currency: paymentData.currency,
             name: "Practice Project",
             description: `Order #${paymentData.orderId}`,

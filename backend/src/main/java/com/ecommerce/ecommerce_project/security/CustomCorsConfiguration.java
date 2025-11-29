@@ -20,7 +20,7 @@ public class CustomCorsConfiguration {
             public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
                 CorsConfiguration configuration=new CorsConfiguration();
                 configuration.setAllowedHeaders(Collections.singletonList("*"));
-                configuration.setAllowedOrigins(List.of("http://localhost:5173"));
+                configuration.setAllowedOrigins(List.of("http://localhost:5173","https://anish-ecommerce-spring.netlify.app"));
                 configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
                 configuration.setAllowedHeaders(List.of("*"));
                 configuration.setAllowCredentials(true);
